@@ -2,20 +2,44 @@ import sys
 import string
 import random
 import time
+# import numpy as np
 from half_smart import get_ai_move_medium
+from unbeatable import get_ai_move_hard
+
 
 def init_board():
-    """Returns an empty 3-by-3 board (with .)."""
-    row_A = ['.', '.', '.']
-    row_B = ['.', '.', '.']
-    row_C = ['.', '.', '.']
-    board = [row_A, row_B, row_C]
+    board_choice = input("Choose the size of the board: (3 , 5, 7) :\n")
+    if board_choice == "quit":  #quit
+            sys.exit()
+    board_choice = int(board_choice)
+    if board_choice == 3:
+        row_A = ['.', '.', '.']
+        row_B = ['.', '.', '.']
+        row_C = ['.', '.', '.']
+        board = [row_A, row_B, row_C]
+
+    if board_choice == 5:
+        row_A = ['.', '.', '.', '.', '.']
+        row_B = ['.', '.', '.', '.', '.']
+        row_C = ['.', '.', '.', '.', '.']
+        row_D = ['.', '.', '.', '.', '.']
+        row_E = ['.', '.', '.', '.', '.']
+        board = [row_A, row_B, row_C, row_D, row_E]
+
+    if board_choice == 7:
+        row_A = ['.', '.', '.', '.', '.', '.', '.']
+        row_B = ['.', '.', '.', '.', '.', '.', '.']
+        row_C = ['.', '.', '.', '.', '.', '.', '.']
+        row_D = ['.', '.', '.', '.', '.', '.', '.']
+        row_E = ['.', '.', '.', '.', '.', '.', '.']
+        row_F = ['.', '.', '.', '.', '.', '.', '.']
+        row_G = ['.', '.', '.', '.', '.', '.', '.']
+        board = [row_A, row_B, row_C, row_D, row_E, row_F, row_G]
 
     return board
 
 
 def get_move(board, player):
-    """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     rows = list(string.ascii_uppercase)
     columns = [str(num) for num in range(len(board)+1)]
@@ -49,53 +73,29 @@ def get_ai_move_easy(board, player):
             continue
     return row, col
 
-# def get_ai_move_medium(board, player):
-#     row, col = 0, 0
-#     letter = ''
-#     if player == 'X':
-#         letter = 'O'
-#     elif player == 'O':
-#         letter = 'X'
-#     while True:
-#         for i in range(len(board)):
-#             for j in range(len(board)):
-#                 board_copy = copy.deepcopy(board)
-#                 board_copy[i][j] = letter
-#                 if has_won(board_copy, letter) and board[i][j] == '.':
-#                     row = i
-#                     col = j
-#                     return row, col
-#                 else:
-#                     board_copy[i][j] = '.'
-#                     continue
-#         else:
-#             row = random.randrange(len(board))
-#             col = random.randrange(len(board[row]))
-#         if board[row][col] == '.':
-#             return row, col
-#         else:
-#             continue
-
-
-def get_ai_move_hard():
-    pass
-
 def mark(board, player, row, col):
-    """Marks the element at row & col on the board for player."""
     board[row][col] = player
 
 def has_won(board, player):
     for row_index, row in enumerate(board):  #check the rows 
-        if all(elem == row[0] for elem in row) and row[0] == player:
+        if all(elem == row[0] for elem in row) and row[0] == player:  #check if all element in rows are the same
             return True
         for col_index in range(len(row)):            
-            if all(row[col_index] == player for row in board):
+            if all(row[col_index] == player for row in board):        #check if row's same column are the same
                 return True
-        for row in board:            
-            if board[0][0] == player and board[-1][-1] == player and board[1][1] == player: 
-                return True
-            if board[0][2] == player and board[1][1] == player and board[2][0]== player:    
-                return True
+        rdiags = []
+        for ix in range(len(board)):
+                rdiags.append(board[ix][ix])
+        if rdiags.count(rdiags[0]) == len(rdiags) and rdiags[0] == player:
+            return True
+
+        ldiags = []
+        for idx, reverse_idx in enumerate(reversed(range(len(board)))):
+            ldiags.append(board[idx][reverse_idx])
+
+        if ldiags.count(ldiags[0]) == len(ldiags) and ldiags[0] == player:
+            return True
+
     return False
 
 def is_full(board):
@@ -109,13 +109,13 @@ def print_board(board):
     print(f"\n  {'   '.join([str(num + 1) for num in range(len(board))])}")
     for index, row in enumerate(board):
         print(f"{abc[index]} {' | '.join(row)}")
-        if index != 2:
-            print(" ---+---+---")
+        if index != (len(board)-1):
+                print(" " + ("---+" *(len(board)-1)) + "---")
+
         else:
             break
 
 def print_result(winner):
-    """Congratulates winner or proclaims tie (if winner equals zero)."""
     if winner == 0:
         print("\n It's a tie!")
     else:
@@ -140,7 +140,12 @@ def tictactoe_game(mode,diff):
             else:
                 time.sleep(1)
                 row,col = get_ai_move_medium(board, player)
-
+        elif mode == "HUMAN-AI" and diff == 3:
+            if player == 'X':
+                row, col = get_move(board, player)
+            else:
+                time.sleep(1)
+                row,col = get_ai_move_hard(board, player)
         elif mode == "AI-HUMAN" and diff == 1:
             if player == 'X':
                 time.sleep(1)
@@ -153,9 +158,13 @@ def tictactoe_game(mode,diff):
                 row,col = get_ai_move_medium(board, player)
             else:
                 row, col = get_move(board, player)
+        elif mode == "AI-HUMAN" and diff == 3:
+            if player == 'X':
+                time.sleep(1)
+                row,col = get_ai_move_hard(board, player)
+            else:
+                row, col = get_move(board, player)
                 
-
-
         elif mode == "AI-AI":
             time.sleep(1)
             row,col = get_ai_move_hard(board, player)
@@ -175,21 +184,30 @@ def tictactoe_game(mode,diff):
     print_result(winner)
 
 def difficulty():
-    try:
-        diff_choice = int(input("Choose a level: (easy-1, medium-2 ,hard-3\n"))
-        if diff_choice == 1:
-            diff = 1
-        elif diff_choice == 2:
-            diff = 2
-        elif diff_choice == 3:
-            diff = 3
-    except ValueError:
-        diff_choice = int(input("Choose a level: (easy-1, medium-2 ,hard-3\n"))
-
-    return diff
+    while True:    
+        try:
+            diff_choice = input("Choose a level: (easy-1, medium-2 ,hard-3)\n")
+            if diff_choice == "quit":
+                sys.exit()
+            diff_choice = int(diff_choice)
+            if diff_choice == 1:
+                diff = 1
+            elif diff_choice == 2:
+                diff = 2
+            elif diff_choice == 3:
+                diff = 3
+            else:
+                continue
+        except ValueError or UnboundLocalError:
+            continue
+        
+        return diff
 
 def main_menu():
-    mode_choice = int(input("Single player: 1, Multiplayer:(player first) 2, Multiplayer:(AI first) 3, Computer against itself: 4\n"))
+    mode_choice = input("Two-player mode: 1, Against AI(player first): 2, Against AI(AI first): 3, Computer against itself: 4\n")
+    if mode_choice == "quit":
+        sys.exit()
+    mode_choice = int(mode_choice)
     diff = difficulty()
     if mode_choice == 1:
         mode = "HUMAN-HUMAN"   
@@ -201,7 +219,7 @@ def main_menu():
         diff
     elif mode_choice == 4:
         mode = "AI-AI"
-
+    
     tictactoe_game(mode, diff)
     
 
