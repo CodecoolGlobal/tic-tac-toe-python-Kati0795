@@ -2,13 +2,12 @@ import sys
 import string
 import random
 import time
-# import numpy as np
 from half_smart import get_ai_move_medium
-from unbeatable import get_ai_move_hard
-
+from unbeatable import get_ai_move_hard_ai
+from very_unbeatable import get_ai_move_hard_hu
 
 def init_board():
-    board_choice = input("Choose the size of the board: (3 , 5, 7) :\n")
+    board_choice = input("Choose the size of the board: (3, 5, 7) :\n")
     if board_choice == "quit":  #quit
             sys.exit()
     board_choice = int(board_choice)
@@ -44,7 +43,7 @@ def get_move(board, player):
     rows = list(string.ascii_uppercase)
     columns = [str(num) for num in range(len(board)+1)]
     while True:
-        coordinates = input("\n A1 - C3: ")
+        coordinates = input("\n Make a step: ")
         if coordinates == "quit":  #quit
             sys.exit()
         coordinates = list(coordinates)
@@ -145,7 +144,7 @@ def tictactoe_game(mode,diff):
                 row, col = get_move(board, player)
             else:
                 time.sleep(1)
-                row,col = get_ai_move_hard(board, player)
+                row,col = get_ai_move_hard_hu(board, player)
         elif mode == "AI-HUMAN" and diff == 1:
             if player == 'X':
                 time.sleep(1)
@@ -161,13 +160,13 @@ def tictactoe_game(mode,diff):
         elif mode == "AI-HUMAN" and diff == 3:
             if player == 'X':
                 time.sleep(1)
-                row,col = get_ai_move_hard(board, player)
+                row,col = get_ai_move_hard_ai(board, player)
             else:
                 row, col = get_move(board, player)
                 
         elif mode == "AI-AI":
             time.sleep(1)
-            row,col = get_ai_move_hard(board, player)
+            row,col = get_ai_move_hard_ai(board, player)
 
         mark(board, player, row, col)   
         if has_won(board, player):
