@@ -3,11 +3,13 @@ def get_ai_move_medium(board, player):
     import copy
     from tic_tac_toe import has_won
     row, col = 0, 0
+    colored_X = '\033[31mX\033[0m'
+    colored_O = '\033[34mO\033[0m'
     letter = ''
-    if player == 'X':
-        letter = 'O'
-    elif player == 'O':
-        letter = 'X'
+    if player == colored_X:
+        letter = colored_O
+    elif player == colored_O:
+        letter = colored_X
 
     for i in range(len(board)):
         for j in range(len(board)):
