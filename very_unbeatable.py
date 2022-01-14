@@ -9,12 +9,14 @@ def get_ai_move_hard_hu(board, player):
     last_element = len(list_row)-1
     corner_indexes = [0,last_element]
     coords = []
+    colored_X = '\033[31mX\033[0m'
+    colored_O = '\033[34mO\033[0m'
 
     letter = ''
-    if player == 'X':
-        letter = 'O'
-    elif player == 'O':
-        letter = 'X'
+    if player == colored_X:
+        letter = colored_O
+    elif player == colored_O:
+        letter = colored_X
     
     middle_row = int(len(board) / 2)
     middle_col = int(len(board[middle_row]) / 2)
@@ -63,12 +65,14 @@ def unbeatable(board, player):
     list_row = board[row]
     last_element = len(list_row)-1
     corner_indexes = [0,last_element]
+    colored_X = '\033[31mX\033[0m'
+    colored_O = '\033[34mO\033[0m'
     
     letter = ''
-    if player == 'X':
-        letter = 'O'
-    elif player == 'O':
-        letter = 'X'
+    if player == colored_X:
+        letter = colored_O
+    elif player == colored_O:
+        letter = colored_X
     
     for i in range(len(board)):
         for j in range(len(board)):
@@ -102,6 +106,8 @@ def unbeatable(board, player):
         for i in corner_indexes:
             for j in corner_indexes:
                 if board[i][j] == '.':
+                    row = i
+                    col = j
                     return row, col
                 else:
                     continue

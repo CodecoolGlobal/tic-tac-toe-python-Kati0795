@@ -43,7 +43,7 @@ def get_move(board, player):
     rows = list(string.ascii_uppercase)
     columns = [str(num) for num in range(len(board)+1)]
     while True:
-        coordinates = input("\n Make a step: ")
+        coordinates = input(f"\n {player}, Please make your step: ")
         if coordinates == "quit":  #quit
             sys.exit()
         coordinates = list(coordinates)
@@ -122,51 +122,53 @@ def print_result(winner):
 
 def tictactoe_game(mode,diff):
     board = init_board()
-    player = 'X'
+    colored_X = '\033[31mX\033[0m'
+    colored_O = '\033[34mO\033[0m'
+    player = colored_X
     while True:
         print_board(board)
         if mode == "HUMAN-HUMAN":
             row, col = get_move(board, player)
         elif mode == "HUMAN-AI" and diff == 1:
-            if player == 'X':
+            if player == colored_X:
                 row, col = get_move(board, player)
             else:
                 time.sleep(1)
                 row,col = get_ai_move_easy(board, player)
         elif mode == "HUMAN-AI" and diff == 2:
-            if player == 'X':
+            if player == colored_X:
                 row, col = get_move(board, player)
             else:
                 time.sleep(1)
                 row,col = get_ai_move_medium(board, player)
         elif mode == "HUMAN-AI" and diff == 3:
-            if player == 'X':
+            if player == colored_X:
                 row, col = get_move(board, player)
             else:
                 time.sleep(1)
                 row,col = get_ai_move_hard_hu(board, player)
         elif mode == "AI-HUMAN" and diff == 1:
-            if player == 'X':
+            if player == colored_X:
                 time.sleep(1)
                 row,col = get_ai_move_easy(board, player)
             else:
                 row, col = get_move(board, player)
         elif mode == "AI-HUMAN" and diff == 2:
-            if player == 'X':
+            if player == colored_X:
                 time.sleep(1)
                 row,col = get_ai_move_medium(board, player)
             else:
                 row, col = get_move(board, player)
         elif mode == "AI-HUMAN" and diff == 3:
-            if player == 'X':
+            if player == colored_X:
                 time.sleep(1)
                 row,col = get_ai_move_hard_ai(board, player)
             else:
                 row, col = get_move(board, player)
                 
         elif mode == "AI-AI":
-            time.sleep(1)
-            row,col = get_ai_move_hard_ai(board, player)
+                time.sleep(1)
+                row,col = get_ai_move_hard_hu(board, player)
 
         mark(board, player, row, col)   
         if has_won(board, player):
@@ -175,10 +177,10 @@ def tictactoe_game(mode,diff):
         if is_full(board):
             winner = 0
             break
-        if player == 'X':
-            player = 'O'
-        elif player == 'O':
-            player = 'X' 
+        if player == colored_X:
+            player = colored_O
+        elif player == colored_O:
+            player = colored_X 
     print_board(board)    
     print_result(winner)
 

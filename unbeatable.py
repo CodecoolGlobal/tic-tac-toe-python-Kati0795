@@ -5,10 +5,12 @@ def get_ai_move_hard_ai(board, player):
     from tic_tac_toe import has_won
     row, col = 0, 0
     letter = ''
-    if player == 'X':
+    colored_X = '\033[31mX\033[0m'
+    colored_O = '\033[34mO\033[0m'
+    if player == colored_X:
         letter = 'O'
     elif player == 'O':
-        letter = 'X'
+        letter = colored_X
 
     for i in range(len(board)):
         for j in range(len(board)):
@@ -19,7 +21,7 @@ def get_ai_move_hard_ai(board, player):
                 col = j
                 return row, col
             else:
-                board_copy[i][j] = '.'
+                board_copy[i][j] == '.'
                 continue
    
     for i in range(len(board)):
@@ -63,27 +65,4 @@ def get_ai_move_hard_ai(board, player):
             return row, col
         else:
             continue
-    # from tic_tac_toe import init_board
-    # board = init_board
-    # corners = [board[0][0], board[0][2], board[2][0], board[2][2]]
-  
-
-
-# def get_ai_move_hard_hu_ai(board, player):  #first step : HUMAN
-#     import random
-#     import copy
-#     from tic_tac_toe import has_won
-
-#     #   >>>> corners <<<<
-#     LU = board[0][0]    #left up
-#     RU = board[0][-1]   #right up
-#     RD = board[-1][-1]  #left down
-#     LD = board[-1][0]   #right down
-
-
-
-# def get_ai_move_hard_ai_hu(board, player):   #first step : AI
-#     import random
-#     import copy
-#     from tic_tac_toe import has_won
-
+    
