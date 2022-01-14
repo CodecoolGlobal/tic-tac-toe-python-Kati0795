@@ -8,8 +8,8 @@ def get_ai_move_hard_ai(board, player):
     colored_X = '\033[31mX\033[0m'
     colored_O = '\033[34mO\033[0m'
     if player == colored_X:
-        letter = 'O'
-    elif player == 'O':
+        letter = colored_O
+    elif player == colored_O:
         letter = colored_X
 
     for i in range(len(board)):
