@@ -7,33 +7,22 @@ from unbeatable import get_ai_move_hard_ai
 from very_unbeatable import get_ai_move_hard_hu
 
 def init_board():
-    board_choice = input("Choose the size of the board: (3, 5, 7) :\n")
-    if board_choice == "quit":  #quit
-            sys.exit()
-    board_choice = int(board_choice)
-    if board_choice == 3:
-        row_A = ['.', '.', '.']
-        row_B = ['.', '.', '.']
-        row_C = ['.', '.', '.']
-        board = [row_A, row_B, row_C]
+    while True:
+        board_choice = input("Choose the size of the board: (3, 5, 7) :\n")
+        if board_choice == "quit":  #quit
+                sys.exit()
+        if not board_choice.isalpha():    
+            board_choice = int(board_choice)
+            if board_choice == (3 or 5 or 7):
+                break
+            else:
+                continue
+        else:
+            continue
 
-    if board_choice == 5:
-        row_A = ['.', '.', '.', '.', '.']
-        row_B = ['.', '.', '.', '.', '.']
-        row_C = ['.', '.', '.', '.', '.']
-        row_D = ['.', '.', '.', '.', '.']
-        row_E = ['.', '.', '.', '.', '.']
-        board = [row_A, row_B, row_C, row_D, row_E]
-
-    if board_choice == 7:
-        row_A = ['.', '.', '.', '.', '.', '.', '.']
-        row_B = ['.', '.', '.', '.', '.', '.', '.']
-        row_C = ['.', '.', '.', '.', '.', '.', '.']
-        row_D = ['.', '.', '.', '.', '.', '.', '.']
-        row_E = ['.', '.', '.', '.', '.', '.', '.']
-        row_F = ['.', '.', '.', '.', '.', '.', '.']
-        row_G = ['.', '.', '.', '.', '.', '.', '.']
-        board = [row_A, row_B, row_C, row_D, row_E, row_F, row_G]
+    board = []
+    for _ in range(board_choice):
+        board.append(['.' for _ in range(board_choice)])
 
     return board
 
@@ -205,23 +194,33 @@ def difficulty():
         return diff
 
 def main_menu():
-    mode_choice = input("Two-player mode: 1, Against AI(player first): 2, Against AI(AI first): 3, Computer against itself: 4\n")
-    if mode_choice == "quit":
-        sys.exit()
-    mode_choice = int(mode_choice)
-    diff = difficulty()
-    if mode_choice == 1:
-        mode = "HUMAN-HUMAN"   
-    elif mode_choice == 2:
-        mode = "HUMAN-AI"
-        diff
-    elif mode_choice == 3:
-        mode = "AI-HUMAN"
-        diff
-    elif mode_choice == 4:
-        mode = "AI-AI"
     
-    tictactoe_game(mode, diff)
+    while True:
+        mode_choice = input("Two-player mode: 1, Against AI(player first): 2, Against AI(AI first): 3, Computer against itself: 4\n")
+        if mode_choice == "quit":
+            sys.exit()
+        
+        if not mode_choice.isalpha():
+            mode_choice = int(mode_choice)
+            diff = None
+            if mode_choice == 1:
+                mode = "HUMAN-HUMAN"   
+            elif mode_choice == 2:
+                mode = "HUMAN-AI"
+                diff = difficulty()
+                diff
+            elif mode_choice == 3:
+                mode = "AI-HUMAN"
+                diff = difficulty()
+                diff
+            elif mode_choice == 4:
+                mode = "AI-AI"
+            else: 
+                continue
+        else:
+            continue    
+
+        tictactoe_game(mode, diff)
     
 
 if __name__ == '__main__':
